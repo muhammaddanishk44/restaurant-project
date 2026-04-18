@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savoria | Fine Dining Restaurant</title>
+<meta name="description" content="Savoria – A luxury fine dining experience with authentic flavors and elegant ambiance.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --dark: #0e0c0a;
+  --dark2: #1a1713;
+  --dark3: #252018;
+  --cream: #f5f0e8;
+  --cream2: #e8e0d0;
+  --text: #d4c9b0;
+  --white: #ffffff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: 'Jost', sans-serif;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); }
+
+/* Preloader */
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--dark);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease;
+}
+#preloader.hide { opacity: 0; pointer-events: none; }
+.pre-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: var(--gold);
+  letter-spacing: 0.3em;
+  animation: fadeUp 1s ease forwards;
+}
+.pre-line {
+  width: 0; height: 1px;
+  background: var(--gold);
+  margin-top: 1rem;
+  animation: expandLine 1.2s ease 0.5s forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes expandLine {
+  from { width: 0; }
+  to { width: 120px; }
+}
+
+/* Navbar */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.5rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: all 0.4s ease;
+}
+#navbar.scrolled {
+  background: rgba(14,12,10,0.95);
+  backdrop-filter: blur(20px);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+}
+.nav-links { display: flex; gap: 2.5rem; align-items: center; }
+.nav-links a {
+  color: var(--cream2);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { width: 100%; }
+.btn-reserve {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 10px 24px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+.btn-reserve:hover {
+  background: var(--gold);
+  color: var(--dark);
+}
+
+/* Hamburger */
+#hamburger {
+  display: none;
+  background: none; border: none;
+  color: var(--gold); font-size: 1.4rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+#hamburger.open { transform: rotate(90deg); }
+#hamburger.open .fa-bars::before { content: "\f00d"; }
+
+/* Mobile menu */
+#mobile-menu {
+  display: flex; flex-direction: column;
+  background: rgba(14,12,10,0.98);
+  border-top: 1px solid rgba(201,168,76,0.15);
+  padding: 0 2rem;
+  gap: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  position: fixed; top: 70px; left: 0; right: 0;
+  z-index: 99;
+}
+#mobile-menu.open { max-height: 400px; padding: 1.5rem 2rem; gap: 1.2rem; }
+#mobile-menu a {
+  color: var(--cream2); text-decoration: none;
+  font-size: 0.9rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  transition: color 0.3s, opacity 0.3s, transform 0.3s;
+  opacity: 0; transform: translateX(-10px);
+}
+#mobile-menu.open a { opacity: 1; transform: translateX(0); }
+#mobile-menu.open a:nth-child(1) { transition-delay: 0.05s; }
+#mobile-menu.open a:nth-child(2) { transition-delay: 0.10s; }
+#mobile-menu.open a:nth-child(3) { transition-delay: 0.15s; }
+#mobile-menu.open a:nth-child(4) { transition-delay: 0.20s; }
+#mobile-menu.open a:nth-child(5) { transition-delay: 0.25s; }
+#mobile-menu a:hover { color: var(--gold); }
+
+/* Hero */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  text-align: center;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(14,12,10,0.3) 0%, rgba(14,12,10,0.7) 60%, var(--dark) 100%),
+    radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+  background-color: #1a1410;
+}
+.hero-bg-pattern {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(201,168,76,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.hero-content { position: relative; z-index: 1; padding: 0 1.5rem; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 0.7rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 2rem;
+  animation: fadeUp 0.8s ease 1.5s both;
+}
+.hero-tag::before, .hero-tag::after {
+  content: ''; width: 40px; height: 1px; background: var(--gold); opacity: 0.5;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  animation: fadeUp 0.8s ease 1.7s both;
+}
+.hero-title em { color: var(--gold); font-style: italic; }
+.hero-sub {
+  font-size: 1rem; color: var(--text);
+  margin-top: 1.5rem; line-height: 1.8;
+  max-width: 500px; margin-left: auto; margin-right: auto;
+  font-weight: 300; letter-spacing: 0.05em;
+  animation: fadeUp 0.8s ease 1.9s both;
+}
+.hero-btns {
+  display: flex; gap: 1rem; justify-content: center;
+  margin-top: 2.5rem; flex-wrap: wrap;
+  animation: fadeUp 0.8s ease 2.1s both;
+}
+.btn-gold {
+  background: var(--gold);
+  color: var(--dark);
+  padding: 14px 36px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  border: none; cursor: pointer;
+  transition: all 0.3s; text-decoration: none;
+  display: inline-block;
+}
+.btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+.btn-ghost {
+  background: transparent;
+  color: var(--cream);
+  padding: 14px 36px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  border: 1px solid rgba(245,240,232,0.3);
+  cursor: pointer; transition: all 0.3s; text-decoration: none;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.hero-scroll {
+  position: absolute; bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7;
+  animation: fadeUp 0.8s ease 2.3s both;
+}
+.scroll-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollAnim 2s ease infinite;
+}
+@keyframes scrollAnim {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* Section base */
+section { padding: 6rem 1.5rem; }
+.section-tag {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem;
+}
+.section-tag::before, .section-tag::after {
+  content: ''; width: 30px; height: 1px; background: var(--gold); opacity: 0.5;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700; color: var(--cream);
+  text-align: center; line-height: 1.2;
+}
+.section-title em { color: var(--gold); font-style: italic; }
+.section-sub {
+  text-align: center; color: var(--text);
+  font-size: 0.95rem; line-height: 1.8;
+  max-width: 500px; margin: 1rem auto 0;
+  font-weight: 300;
+}
+.gold-divider {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; margin: 1.5rem auto;
+}
+.gold-divider::before, .gold-divider::after {
+  content: ''; width: 60px; height: 1px; background: var(--gold); opacity: 0.4;
+}
+.gold-divider span { color: var(--gold); font-size: 1rem; }
+
+/* About */
+#about { background: var(--dark2); }
+.about-grid {
+  max-width: 1000px; margin: 3rem auto 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+}
+.about-img-wrap {
+  position: relative;
+}
+.about-img-box {
+  width: 100%; aspect-ratio: 3/4;
+  background: linear-gradient(135deg, #2a1f0f, #1a1208);
+  border: 1px solid rgba(201,168,76,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 5rem; position: relative; overflow: hidden;
+}
+.about-img-box::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent);
+}
+.about-badge {
+  position: absolute; bottom: -1rem; right: -1rem;
+  background: var(--gold);
+  color: var(--dark);
+  padding: 1.5rem;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+}
+.about-badge .num {
+  font-size: 2rem; font-weight: 700; display: block; line-height: 1;
+}
+.about-badge .txt {
+  font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.about-text h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; color: var(--cream);
+  line-height: 1.3; margin-bottom: 1.25rem;
+}
+.about-text p {
+  color: var(--text); font-size: 0.95rem;
+  line-height: 1.85; font-weight: 300; margin-bottom: 1rem;
+}
+.about-features {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;
+}
+.about-feat {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.85rem; color: var(--cream2);
+}
+.about-feat i { color: var(--gold); font-size: 0.8rem; }
+
+/* Menu */
+#menu { background: var(--dark); }
+.menu-tabs {
+  display: flex; justify-content: center; gap: 0.5rem;
+  flex-wrap: wrap; margin: 2.5rem 0;
+}
+.menu-tab {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.2);
+  color: var(--text);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s;
+}
+.menu-tab.active, .menu-tab:hover {
+  background: var(--gold); color: var(--dark); border-color: var(--gold);
+}
+.menu-grid {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
+}
+.menu-card {
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.1);
+  padding: 1.75rem;
+  transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+.menu-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.menu-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
+.menu-card:hover::before { opacity: 1; }
+.menu-emoji { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+.menu-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+.menu-card p { font-size: 0.85rem; color: var(--text); line-height: 1.65; font-weight: 300; }
+.menu-price {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 1.25rem; padding-top: 1rem;
+  border-top: 1px solid rgba(201,168,76,0.1);
+}
+.price { color: var(--gold); font-size: 1.1rem; font-weight: 600; }
+.menu-tag {
+  font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+}
+
+/* Stats */
+#stats {
+  background: var(--dark3);
+  padding: 5rem 1.5rem;
+  border-top: 1px solid rgba(201,168,76,0.1);
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.stats-grid {
+  max-width: 900px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: center;
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem; font-weight: 700; color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text); margin-top: 0.5rem;
+}
+
+/* Gallery */
+#gallery { background: var(--dark2); }
+.gallery-grid {
+  max-width: 1100px; margin: 3rem auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 1rem;
+}
+.gallery-item {
+  background: var(--dark3);
+  border: 1px solid rgba(201,168,76,0.1);
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; overflow: hidden;
+  position: relative; cursor: pointer;
+  transition: all 0.4s;
+}
+.gallery-item:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+  aspect-ratio: unset;
+  min-height: 300px;
+}
+.gallery-item::after {
+  content: attr(data-label);
+  position: absolute; inset: 0;
+  background: rgba(14,12,10,0.85);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; color: var(--gold);
+  font-style: italic;
+  opacity: 0; transition: opacity 0.3s;
+}
+.gallery-item:hover { border-color: rgba(201,168,76,0.4); }
+.gallery-item:hover::after { opacity: 1; }
+
+/* Testimonials */
+#testimonials { background: var(--dark); }
+.testi-grid {
+  max-width: 1000px; margin: 3rem auto 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
+}
+.testi-card {
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.1);
+  padding: 2rem;
+  position: relative; transition: all 0.3s;
+}
+.testi-card:hover { border-color: rgba(201,168,76,0.3); }
+.quote-icon {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem; color: var(--gold); opacity: 0.2;
+  line-height: 1; margin-bottom: 0.5rem;
+}
+.testi-card p {
+  font-size: 0.9rem; color: var(--text);
+  line-height: 1.8; font-style: italic; font-weight: 300;
+}
+.testi-author {
+  display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem;
+}
+.testi-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.9rem; color: var(--dark);
+}
+.stars { color: var(--gold); font-size: 0.75rem; letter-spacing: 2px; margin-top: 2px; }
+
+/* Reservation */
+#reservation { background: var(--dark3); }
+.res-wrap {
+  max-width: 700px; margin: 3rem auto 0;
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.15);
+  padding: 3rem;
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.input-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+.input-wrap label {
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); font-weight: 500;
+}
+.input-field {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.15);
+  padding: 12px 16px;
+  color: var(--cream);
+  font-family: 'Jost', sans-serif; font-size: 0.9rem;
+  outline: none; transition: border-color 0.3s; width: 100%;
+}
+.input-field::placeholder { color: #4a4030; }
+.input-field:focus { border-color: var(--gold); }
+select.input-field option { background: var(--dark2); }
+.full-width { grid-column: span 2; }
+#res-msg {
+  margin-top: 1rem; padding: 12px 16px;
+  font-size: 0.85rem; display: none; text-align: center;
+}
+#res-msg.success { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); display: block; }
+#res-msg.error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; display: block; }
+
+/* Contact strip */
+#contact-strip {
+  background: var(--dark2);
+  border-top: 1px solid rgba(201,168,76,0.1);
+  padding: 4rem 1.5rem;
+}
+.contact-grid {
+  max-width: 900px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center;
+}
+.contact-item i { color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem; display: block; }
+.contact-item h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; color: var(--cream); margin-bottom: 0.5rem;
+}
+.contact-item p { font-size: 0.85rem; color: var(--text); font-weight: 300; line-height: 1.6; }
+
+/* Footer */
+footer {
+  background: var(--dark);
+  border-top: 1px solid rgba(201,168,76,0.1);
+  padding: 3rem 1.5rem 2rem;
+  text-align: center;
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; color: var(--gold);
+  letter-spacing: 0.2em; margin-bottom: 1rem;
+}
+.footer-links {
+  display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.footer-links a {
+  color: var(--text); text-decoration: none;
+  font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--gold); }
+.social-links { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+.social-link {
+  width: 38px; height: 38px;
+  border: 1px solid rgba(201,168,76,0.2);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text); text-decoration: none; font-size: 0.9rem;
+  transition: all 0.3s;
+}
+.social-link:hover { border-color: var(--gold); color: var(--gold); }
+.footer-copy { font-size: 0.75rem; color: #4a4030; letter-spacing: 0.05em; }
+
+/* Scroll to top */
+#scrollTop {
+  position: fixed; bottom: 2rem; right: 2rem;
+  width: 44px; height: 44px;
+  background: var(--gold); border: none;
+  color: var(--dark); font-size: 1rem;
+  cursor: pointer; display: none;
+  align-items: center; justify-content: center;
+  z-index: 99; transition: all 0.3s;
+}
+#scrollTop:hover { background: var(--gold-light); transform: translateY(-3px); }
+#scrollTop.show { display: flex; }
+
+/* Reveal animation */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links, #navbar .btn-reserve { display: none; }
+  #hamburger { display: block; }
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-item:first-child { grid-column: span 2; min-height: 200px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .full-width { grid-column: span 1; }
+  .contact-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .res-wrap { padding: 2rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Preloader -->
+<div id="preloader">
+  <div class="pre-logo">SAVORIA</div>
+  <div class="pre-line"></div>
+</div>
+
+<!-- Scroll to Top -->
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fa fa-arrow-up"></i>
+</button>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">SAVORIA</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#reservation" class="btn-reserve">Reserve Table</a>
+  </div>
+  <button id="hamburger" onclick="toggleMenu()"><i class="fa fa-bars"></i></button>
+</nav>
+<div id="mobile-menu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#menu" onclick="toggleMenu()">Menu</a>
+  <a href="#gallery" onclick="toggleMenu()">Gallery</a>
+  <a href="#testimonials" onclick="toggleMenu()">Reviews</a>
+  <a href="#reservation" onclick="toggleMenu()">Reserve Table</a>
+</div>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Est. 2018 · Fine Dining</div>
+    <h1 class="hero-title">Where Every Meal<br>Becomes a <em>Memory</em></h1>
+    <p class="hero-sub">Experience the art of fine dining with authentic flavors, curated ingredients, and an ambiance crafted for unforgettable moments.</p>
+    <div class="hero-btns">
+      <a href="#reservation" class="btn-gold">Reserve a Table</a>
+      <a href="#menu" class="btn-ghost">View Our Menu</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="section-tag">Our Story</div>
+  <h2 class="section-title">A Tradition of <em>Taste</em></h2>
+  <div class="gold-divider"><span>✦</span></div>
+  <div class="about-grid reveal">
+    <div class="about-img-wrap">
+      <div class="about-img-box">🍽️</div>
+      <div class="about-badge">
+        <span class="num">15+</span>
+        <span class="txt">Years of Excellence</span>
+      </div>
+    </div>
+    <div class="about-text">
+      <h3>Crafted with Passion,<br>Served with Love</h3>
+      <p>Since 2018, Savoria has been a sanctuary for food lovers seeking more than just a meal. Our chefs bring decades of experience from world-class kitchens to create dishes that tell a story.</p>
+      <p>We source only the finest local and imported ingredients, ensuring every bite is a journey of flavors you won't forget.</p>
+      <div class="about-features">
+        <div class="about-feat"><i class="fa fa-check"></i> Farm-to-table ingredients</div>
+        <div class="about-feat"><i class="fa fa-check"></i> Award-winning chefs</div>
+        <div class="about-feat"><i class="fa fa-check"></i> Private dining rooms</div>
+        <div class="about-feat"><i class="fa fa-check"></i> Live music evenings</div>
+      </div>
+      <div style="margin-top:2rem;">
+        <a href="#menu" class="btn-gold" style="font-size:0.75rem;">Explore Menu</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section id="stats">
+  <div class="stats-grid reveal">
+    <div>
+      <div class="stat-num">12K+</div>
+      <div class="stat-label">Happy Guests</div>
+    </div>
+    <div>
+      <div class="stat-num">80+</div>
+      <div class="stat-label">Menu Items</div>
+    </div>
+    <div>
+      <div class="stat-num">15</div>
+      <div class="stat-label">Expert Chefs</div>
+    </div>
+    <div>
+      <div class="stat-num">4.9★</div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- Menu -->
+<section id="menu">
+  <div class="section-tag">Our Menu</div>
+  <h2 class="section-title">Culinary <em>Masterpieces</em></h2>
+  <div class="gold-divider"><span>✦</span></div>
+  <p class="section-sub">Each dish is a work of art, prepared fresh daily with the finest ingredients.</p>
+
+  <div class="menu-tabs">
+    <button class="menu-tab active" onclick="filterMenu('all', this)">All</button>
+    <button class="menu-tab" onclick="filterMenu('starters', this)">Starters</button>
+    <button class="menu-tab" onclick="filterMenu('mains', this)">Main Course</button>
+    <button class="menu-tab" onclick="filterMenu('desserts', this)">Desserts</button>
+    <button class="menu-tab" onclick="filterMenu('drinks', this)">Drinks</button>
+  </div>
+
+  <div class="menu-grid reveal">
+    <div class="menu-card" data-cat="starters">
+      <span class="menu-emoji">🥗</span>
+      <h4>Garden Fresh Salad</h4>
+      <p>Crispy greens, cherry tomatoes, cucumber ribbons tossed in our signature honey-lemon dressing.</p>
+      <div class="menu-price">
+        <span class="price">Rs. 650</span>
+        <span class="menu-tag">Starter</span>
+      </div>
+    </div>
+    <div class="menu-card" data-cat="starters">
+      <span class="menu-emoji">🍲</span>
+      <h4>Cream of Mushroom Soup</h4>
+      <p>Velvety wild mushroom soup with truffle oil drizzle and artisan bread croutons.</p>
+      <div class="menu-price">
+        <span class="price">Rs. 750</span>
+        <span class="menu-tag">Starter</span>
+      </div>
+    </div>
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🥩</span>
+      <h4>Grilled Tenderloin Steak</h4>
+      <p>Premium 250g beef tenderloin, grilled to perfection with herb butter and roasted vegetables.</p>
+      <div class="menu-price">
+        <span class="price">Rs. 3,200</span>
+        <span class="menu-tag">Main Course</span>
+      </div>
+    </div>
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🍝</span>
+      <h4>Truffle Pasta</h4>
+      <p>House-made fettuccine in black truffle cream sauce, topped with shaved parmesan.</p>
+      <div class="menu-price">
+        <span class="price">Rs. 1,850</span>
+        <span class="menu-tag">Main Course</span>
+      </div>
+    </div>
+    <div class="menu-card" data-cat="desserts">
+      <span class="menu-emoji">🍮</span>
+      <h4>Crème Brûlée</h4>
+      <p>Classic French custard with a perfectly caramelized sugar crust and fresh berries.</p>
+      <div class="menu-price">
+        <span class="price">Rs. 850</span>
+        <span class="menu-tag">Dessert</span>
+      </div>
+    </div>
+    <div class="menu-card" data-cat="drinks">
+      <span class="menu-emoji">☕</span>
+      <h4>Signature Cold Brew</h4>
+      <p>24-hour steeped cold brew coffee with vanilla cream float and chocolate shavings.</p>
+      <div class="menu-price">
+        <span class="price">Rs. 550</span>
+        <span class="menu-tag">Drink</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery">
+  <div class="section-tag">Our Space</div>
+  <h2 class="section-title">A Feast for the <em>Eyes</em></h2>
+  <div class="gold-divider"><span>✦</span></div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item" data-label="The Grand Hall" style="background:linear-gradient(135deg,#1a1208,#2a1f0f);">🏛️</div>
+    <div class="gallery-item" data-label="Chef's Kitchen" style="background:linear-gradient(135deg,#0f1a08,#1a2f0f);">👨‍🍳</div>
+    <div class="gallery-item" data-label="Private Dining" style="background:linear-gradient(135deg,#0f0f1a,#1a1a2f);">🕯️</div>
+    <div class="gallery-item" data-label="Signature Dish" style="background:linear-gradient(135deg,#1a0f08,#2f1a0f);">🍽️</div>
+    <div class="gallery-item" data-label="Wine Collection" style="background:linear-gradient(135deg,#1a0808,#2f0f0f);">🍷</div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials">
+  <div class="section-tag">Guest Reviews</div>
+  <h2 class="section-title">What Our Guests <em>Say</em></h2>
+  <div class="gold-divider"><span>✦</span></div>
+  <div class="testi-grid reveal">
+    <div class="testi-card">
+      <div class="quote-icon">"</div>
+      <p>An absolutely magical evening. The food was impeccable, the ambiance was breathtaking, and the service was flawless. Savoria has become our go-to for special occasions.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AK</div>
+        <div>
+          <div style="color:var(--cream);font-size:0.9rem;font-weight:500;">Ahmed & Fatima</div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="quote-icon">"</div>
+      <p>The truffle pasta was unlike anything I've ever tasted. The chef clearly understands flavor at a deep level. Will be returning every month without fail!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">SR</div>
+        <div>
+          <div style="color:var(--cream);font-size:0.9rem;font-weight:500;">Sara Rehman</div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="quote-icon">"</div>
+      <p>Celebrated my anniversary here and it was perfect in every way. The private dining room, the live music, the food — everything exceeded our expectations.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">MH</div>
+        <div>
+          <div style="color:var(--cream);font-size:0.9rem;font-weight:500;">M. Hassan</div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reservation -->
+<section id="reservation">
+  <div class="section-tag">Book a Table</div>
+  <h2 class="section-title">Reserve Your <em>Experience</em></h2>
+  <div class="gold-divider"><span>✦</span></div>
+  <p class="section-sub">Secure your table for an unforgettable dining experience. We'll confirm within 2 hours.</p>
+  <div class="res-wrap reveal">
+    <form id="res-form">
+      <div class="form-grid">
+        <div class="input-wrap">
+          <label>Your Name</label>
+          <input type="text" class="input-field" placeholder="Muhammad Danish" required>
+        </div>
+        <div class="input-wrap">
+          <label>Phone Number</label>
+          <input type="tel" class="input-field" placeholder="+92 300 0000000" required>
+        </div>
+        <div class="input-wrap">
+          <label>Date</label>
+          <input type="date" class="input-field" required>
+        </div>
+        <div class="input-wrap">
+          <label>Time</label>
+          <select class="input-field">
+            <option>07:00 PM</option>
+            <option>07:30 PM</option>
+            <option>08:00 PM</option>
+            <option>08:30 PM</option>
+            <option>09:00 PM</option>
+            <option>09:30 PM</option>
+          </select>
+        </div>
+        <div class="input-wrap">
+          <label>Guests</label>
+          <select class="input-field">
+            <option>1 Person</option>
+            <option>2 Persons</option>
+            <option>3 Persons</option>
+            <option>4 Persons</option>
+            <option>5+ Persons</option>
+          </select>
+        </div>
+        <div class="input-wrap">
+          <label>Occasion</label>
+          <select class="input-field">
+            <option>Regular Dining</option>
+            <option>Anniversary</option>
+            <option>Birthday</option>
+            <option>Business Dinner</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="input-wrap full-width">
+          <label>Special Requests</label>
+          <textarea class="input-field" placeholder="Any dietary requirements or special requests..." rows="3" style="resize:vertical;"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn-gold" style="width:100%;margin-top:1.5rem;padding:16px;font-size:0.8rem;">
+        Confirm Reservation
+      </button>
+      <div id="res-msg"></div>
+    </form>
+  </div>
+</section>
+
+<!-- Contact Strip -->
+<section id="contact-strip">
+  <div class="contact-grid reveal">
+    <div class="contact-item">
+      <i class="fa fa-map-marker-alt"></i>
+      <h4>Location</h4>
+      <p>123 Food Street, Gulberg III<br>Lahore, Pakistan</p>
+    </div>
+    <div class="contact-item">
+      <i class="fa fa-clock"></i>
+      <h4>Opening Hours</h4>
+      <p>Mon – Thu: 6 PM – 11 PM<br>Fri – Sun: 5 PM – 12 AM</p>
+    </div>
+    <div class="contact-item">
+      <i class="fa fa-phone"></i>
+      <h4>Reservations</h4>
+      <p>+92 300 1234567<br>info@savoria.pk</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">SAVORIA</div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#reservation">Reserve</a>
+  </div>
+  <div class="social-links">
+    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+    <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+  </div>
+  <p class="footer-copy">© 2025 Savoria Fine Dining. All rights reserved.</p>
+</footer>
+
+<script>
+// Preloader
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('preloader').classList.add('hide'), 1500);
+});
+
+// Navbar scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 300);
+});
+
+// Mobile menu
+function toggleMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Menu filter
+function filterMenu(cat, btn) {
+  document.querySelectorAll('.menu-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.menu-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+  });
+}
+
+// Reservation form
+document.getElementById('res-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('button[type="submit"]');
+  btn.textContent = 'Confirming...';
+  btn.disabled = true;
+  setTimeout(() => {
+    const msg = document.getElementById('res-msg');
+    msg.className = 'success';
+    msg.innerHTML = '✦ Your table has been reserved! We will confirm within 2 hours.';
+    this.reset();
+    btn.textContent = 'Confirm Reservation';
+    btn.disabled = false;
+  }, 1500);
+});
+</script>
+</body>
+</html>
